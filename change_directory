@@ -1,0 +1,45 @@
+Sharing steps how to change Apache document root folder to secondary hard drive or another folder
+
+STEPS
+
+1.	You'll have to edit apache2.conf and 000-default.conf to change the document root of apache
+2.	
+The Apache server is installed on var/www/html.This is the default root directory of apache.
+
+3.	Either change the root directory of Apache or move the project to /var/www/html.
+			a.	To change Apache's root directory, run:
+					i.	cd /etc/apache2/sites-available
+
+			b.	Then open the 000-default.conf file using the command:
+					i.	nano 000-default.conf
+	
+			c.	Edit the DocumentRoot option:
+					i.	DocumentRoot /path/to/my/project
+
+			d.	Then restart the apache server:
+					i.	sudo service apache2 restart
+
+4.	If you get Forbidden You don't have permission to access / on this server after changing the root of apache then do follow these steps
+			a.	Find the apache2.conf located in /etc/apache2 and open it using:
+					i.	nano apache2.conf
+
+			b.	Use Ctrl+W and search for Directory (It should be in line 153)
+
+			c.	It should look like this
+					<Directory />
+							Options Indexes FollowSymLinks
+							AllowOverride All
+							Require all denied
+					</Directory>
+			d.	Change it to
+					<Directory />
+							Options Indexes FollowSymLinks Includes ExecCGI
+							AllowOverride All
+							Require all granted
+					</Directory>
+
+			e.	Restart apache
+					i.	sudo service apache2 restart
+
+
+Thanks
